@@ -24,9 +24,14 @@ void btClassicLoop() {
     }
 
     if (hasClient) {
-        uint8_t buf[128];
         while (SerialBT.available()) {
-            size_t n = SerialBT.read(buf, sizeof(buf));
+            uint8_t buf[128];
+            size_t n = 0;
+            while (n < sizeof(buf) && SerialBT.available()) {
+                int b = SerialBT.read();
+                if (b < 0) break;
+                buf[n++] = (uint8_t)b;
+            }
             if (n > 0) {
                 logHex("SPP-RX", "classic", buf, n);
             }

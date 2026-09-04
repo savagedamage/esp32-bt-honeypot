@@ -1,5 +1,8 @@
 # ESP32 Bluetooth Sacrificial Host
 
+[![CI](https://github.com/savagedamage/esp32-bt-honeypot/actions/workflows/ci.yml/badge.svg)](https://github.com/savagedamage/esp32-bt-honeypot/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Use your ESP32 boards as a **sacrificial Bluetooth peer** so suspect Bluetooth
 devices (headphones, earbuds, "smart" accessories) never touch your phone,
 laptop, or anything you care about. The ESP32 presents the attack surface,
@@ -83,7 +86,7 @@ Catches BLE/Wi-Fi/GSM exfil and hidden 2.4 GHz radios. See `rf-emission-scanning
 ## 3. Build & flash
 
 ```
-cd /root/esp32-bt-honeypot
+cd esp32-bt-honeypot
 
 # BLE logger + honeypot  -> ESP32-S3 (or any BLE board)
 pio run -e s3-ble-logger
@@ -127,8 +130,8 @@ The serial log is your evidence — always redirect to a file and hash it.
 
 ## 5. What is / isn't built yet (honest status)
 
-- [x] BLE GATT central logger + honeypot peripheral (Arduino/NimBLE, S3) — **compiling, see below**
-- [x] BT Classic SPP sink (Arduino core, original ESP32) — **compiling, see below**
+- [x] BLE GATT central logger + honeypot peripheral (Arduino/NimBLE 2.x, S3) — **compiles clean, verified**
+- [x] BT Classic SPP sink (Arduino core, original ESP32) — **compiles clean, verified**
 - [ ] A2DP-sink + HFP-AG audio/AT capture → needs ESP-IDF directly (Arduino core
       exposes only SPP for classic). Example paths + build steps in
       `docs/pacify-playbook.md` §6.

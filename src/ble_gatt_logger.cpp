@@ -10,7 +10,7 @@ static NimBLEClient*   pClient = nullptr;
 // pushes at us lands here and gets hex-logged.
 // ---------------------------------------------------------------------------
 static void onNotify(NimBLERemoteCharacteristic* chr, uint8_t* data, size_t len, bool isNotify) {
-    NimBLERemoteService* svc = chr->getRemoteService();
+    const NimBLERemoteService* svc = chr->getRemoteService();
     char id[96];
     snprintf(id, sizeof(id), "%s / %s",
              svc ? svc->getUUID().toString().c_str() : "?",
@@ -68,7 +68,6 @@ static void startHoneypot() {
     NimBLECharacteristic* mfr = dis->createCharacteristic("2A29", NIMBLE_PROPERTY::READ);
     mfr->setValue("ESP32-Sacrificial");
     mfr->setCallbacks(new HoneypotCharCb());
-    dis->start();
 
     NimBLEService* cs = pServer->createService("0000FFF0-0000-1000-8000-00805F9B34FB");
     NimBLECharacteristic* rx = cs->createCharacteristic(
@@ -79,7 +78,6 @@ static void startHoneypot() {
         "0000FFF2-0000-1000-8000-00805F9B34FB",
         NIMBLE_PROPERTY::NOTIFY | NIMBLE_PROPERTY::READ);
     tx->setCallbacks(new HoneypotCharCb());
-    cs->start();
 
     NimBLEAdvertising* adv = NimBLEDevice::getAdvertising();
     adv->addServiceUUID(dis->getUUID());
@@ -99,15 +97,17 @@ static void scanAndConnect() {
     pScan->setActiveScan(true);
     pScan->setInterval(100);
     pScan->setWindow(99);
-    NimBLEScanResults results = pScan->start(BLE_SCAN_MS, false);
+    pScan->start(BLE_SCAN_MS, false);
+    NimBLEScanResults results = pScan->getResults();
 
     LOG_I("Found %d advertiser(s):", results.getCount());
     int matchIndex = -1;
     for (int i = 0; i < results.getCount(); i++) {
-        NimBLEAdvertisedDevice dev = results.getDevice(i);
-        std::string name = dev.getName();
-        std::string addr = dev.getAddress().toString();
-        LOG_I("  [%d] %s  '%s'  RSSI=%d", i, addr.c_str(), name.c_str(), dev.getRSSI());
+        const NimBLEAdvertisedDevice* dev = results.getDevice(i);
+        if (!dev) continue;
+        std::string name = dev->getName();
+        std::string addr = dev->getAddress().toString();
+        LOG_I("  [%d] %s  '%s'  RSSI=%d", i, addr.c_str(), name.c_str(), dev->getRSSI());
         if (matchIndex < 0) {
             if (strlen(HONEYPOT_TARGET_MAC) && addr == HONEYPOT_TARGET_MAC) {
                 matchIndex = i;
@@ -127,28 +127,29 @@ static void scanAndConnect() {
         return;
     }
 
-    NimBLEAdvertisedDevice dev = results.getDevice(matchIndex);
-    LOG_I("Connecting to %s ...", dev.getAddress().toString().c_str());
+    const NimBLEAdvertisedDevice* dev = results.getDevice(matchIndex);
+    if (!dev) { LOG_W("Target not found in scan results."); return; }
+    LOG_I("Connecting to %s ...", dev->getAddress().toString().c_str());
 
     if (pClient) { NimBLEDevice::deleteClient(pClient); }
     pClient = NimBLEDevice::createClient();
     pClient->setConnectionParams(12, 12, 0, 51);   // 15 ms interval, latency 0, 510 ms timeout
-    if (!pClient->connect(&dev)) {
+    if (!pClient->connect(dev)) {
         LOG_E("Connect failed.");
         return;
     }
     LOG_I("Connected. MTU=%u", (unsigned)pClient->getMTU());
 
-    std::vector<NimBLERemoteService*>* services = pClient->getServices(true);
-    if (!services) { LOG_W("No services reported."); return; }
-    LOG_I("Device exposes %u service(s):", (unsigned)services->size());
-    for (auto svc : *services) {
+    const std::vector<NimBLERemoteService*>& services = pClient->getServices(true);
+    if (services.empty()) { LOG_W("No services reported."); return; }
+    LOG_I("Device exposes %u service(s):", (unsigned)services.size());
+    for (auto svc : services) {
         LOG_I("  SERVICE %s", svc->getUUID().toString().c_str());
-        std::vector<NimBLERemoteCharacteristic*>* chars = svc->getCharacteristics(true);
-        if (!chars) continue;
-        for (auto chr : *chars) {
-            LOG_I("    CHAR %s  handle=0x%04X  props=0x%02X",
-                  chr->getUUID().toString().c_str(), chr->getHandle(), chr->getProperties());
+        const std::vector<NimBLERemoteCharacteristic*>& chars = svc->getCharacteristics(true);
+        if (chars.empty()) continue;
+        for (auto chr : chars) {
+            LOG_I("    CHAR %s  handle=0x%04X",
+                  chr->getUUID().toString().c_str(), chr->getHandle());
             if (chr->canRead()) {
                 std::string val = chr->readValue();
                 logHex("READ", chr->getUUID().toString().c_str(),
