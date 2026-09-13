@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 162">
+  <defs>
+    <style>
+      .bg { fill: #0b0f16; }
+      .step { fill: #121a2b; stroke: #1e2d45; stroke-width: 2; rx: 8; }
+      .step-prep { stroke: #4a7c8a; }
+      .step-cap { stroke: #00d4c4; }
+      .step-pac { stroke: #f5a623; }
+      .step-doc { stroke: #2ecc71; }
+      .arrow { fill: none; stroke: #4a7c8a; stroke-width: 2.5; marker-end: url(#arrowhead); }
+      .text-title { font: 700 13px system-ui, sans-serif; fill: #e8f0f8; }
+      .text-caption { font: 400 11px system-ui, sans-serif; fill: #b8c8d8; }
+      .text-num { font: 700 11px system-ui, sans-serif; fill: #8899aa; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a7c8a"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1020" height="162"/>
+  <!-- 1 CONTAIN -->
+  <g transform="translate(10, 11)">
+    <rect class="step step-prep" width="115" height="140" rx="8"/>
+    <text x="57" y="20" text-anchor="middle" class="text-num">1</text>
+    <text x="57" y="45" text-anchor="middle" class="text-title">CONTAIN</text>
+    <text x="57" y="70" text-anchor="middle" class="text-caption" style="line-height:1.3;">Photo + label<br/>Power OFF<br/>Faraday pouch (90+ dB)</text>
+  </g>
+  <path class="arrow" d="M125 81 L135 81"/>
+  <!-- 2 CLASSIFY -->
+  <g transform="translate(135, 11)">
+    <rect class="step step-prep" width="115" height="140" rx="8"/>
+    <text x="57" y="20" text-anchor="middle" class="text-num">2</text>
+    <text x="57" y="45" text-anchor="middle" class="text-title">CLASSIFY</text>
+    <text x="57" y="70" text-anchor="middle" class="text-caption" style="line-height:1.3;">Wired vs wireless<br/>Classic vs BLE<br/>Pick the board</text>
+  </g>
+  <path class="arrow" d="M250 81 L260 81"/>
+  <!-- 3 BASELINE RF -->
+  <g transform="translate(260, 11)">
+    <rect class="step step-prep" width="115" height="140" rx="8"/>
+    <text x="57" y="20" text-anchor="middle" class="text-num">3</text>
+    <text x="57" y="45" text-anchor="middle" class="text-title">BASELINE RF</text>
+    <text x="57" y="70" text-anchor="middle" class="text-caption" style="line-height:1.3;">SDR sweep room<br/>without device<br/>Save baseline</text>
+  </g>
+  <path class="arrow" d="M375 81 L385 81"/>
+  <!-- 4 CAPTURE (sacrificial ESP) -->
+  <g transform="translate(385, 11)">
+    <rect class="step step-cap" width="135" height="140" rx="8"/>
+    <text x="67" y="20" text-anchor="middle" class="text-num">4</text>
+    <text x="67" y="45" text-anchor="middle" class="text-title">CAPTURE</text>
+    <text x="67" y="62" text-anchor="middle" class="text-caption" style="line-height:1.3;">Sacrificial ESP<br/>Flash firmware<br/>Pair on ESP only<br/>Exercise device</text>
+  </g>
+  <path class="arrow" d="M520 81 L530 81"/>
+  <!-- 5 CAPTURE (firmware) -->
+  <g transform="translate(530, 11)">
+    <rect class="step step-cap" width="135" height="140" rx="8"/>
+    <text x="67" y="20" text-anchor="middle" class="text-num">5</text>
+    <text x="67" y="45" text-anchor="middle" class="text-title">CAPTURE</text>
+    <text x="67" y="62" text-anchor="middle" class="text-caption" style="line-height:1.3;">Firmware extract<br/>CH341A clip<br/>Double-read flash<br/>SHA256 must match</text>
+  </g>
+  <path class="arrow" d="M665 81 L675 81"/>
+  <!-- 6 ANALYZE -->
+  <g transform="translate(675, 11)">
+    <rect class="step step-cap" width="115" height="140" rx="8"/>
+    <text x="57" y="20" text-anchor="middle" class="text-num">6</text>
+    <text x="57" y="45" text-anchor="middle" class="text-title">ANALYZE</text>
+    <text x="57" y="70" text-anchor="middle" class="text-caption" style="line-height:1.3;">strings / binwalk /<br/>Ghidra firmware<br/>Diff ESP log for<br/>unexpected traffic</text>
+  </g>
+  <path class="arrow" d="M790 81 L800 81"/>
+  <!-- 7 PACIFY -->
+  <g transform="translate(800, 11)">
+    <rect class="step step-pac" width="115" height="140" rx="8"/>
+    <text x="57" y="20" text-anchor="middle" class="text-num">7</text>
+    <text x="57" y="45" text-anchor="middle" class="text-title">PACIFY</text>
+    <text x="57" y="70" text-anchor="middle" class="text-caption" style="line-height:1.3;">Back in pouch<br/>Battery disconnected<br/>Never reflashed<br/>Documented</text>
+  </g>
+  <path class="arrow" d="M915 81 L925 81"/>
+  <!-- 8 DOCUMENT -->
+  <g transform="translate(925, 11)">
+    <rect class="step step-doc" width="85" height="140" rx="8"/>
+    <text x="42" y="20" text-anchor="middle" class="text-num">8</text>
+    <text x="42" y="45" text-anchor="middle" class="text-title">DOCUMENT</text>
+    <text x="42" y="70" text-anchor="middle" class="text-caption" style="line-height:1.3;">Hash manifest<br/>MAC/name<br/>IOCs + timeline<br/>Threat brief</text>
+  </g>
+</svg>

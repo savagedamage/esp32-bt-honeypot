@@ -14,7 +14,7 @@
 
 // ---- BLE behaviour --------------------------------------------------------
 #define BLE_SCAN_MS           8000             // scan window per cycle
-#define BLE_AUTO_CONNECT      1                // 1 = connect to first match
+#define BLE_AUTO_CONNECT      0                // 1 = connect to the matched target; 0 = passive scan only (matches empty-target default)
 #define BLE_HONEYPOT          1                // 1 = also run a honeypot GATT server
 #define BLE_HONEYPOT_NAME     "esp32-honeypot" // advertised name (<= ~20 chars)
 

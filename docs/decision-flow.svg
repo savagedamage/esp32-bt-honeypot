@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 590">
+  <defs>
+    <style>
+      .bg { fill: #0b0f16; }
+      .panel { fill: #121a2b; stroke: #1e2d45; stroke-width: 2; rx: 8; }
+      .accent { fill: none; stroke: #f5a623; stroke-width: 2.5; }
+      .arrow { fill: none; stroke: #f5a623; stroke-width: 2.5; marker-end: url(#arrowhead); }
+      .text-title { font: 700 18px system-ui, sans-serif; fill: #e8f0f8; }
+      .text-body { font: 400 13px system-ui, sans-serif; fill: #b8c8d8; }
+      .text-small { font: 400 11px system-ui, sans-serif; fill: #8899aa; }
+      .text-accent { font: 600 13px system-ui, sans-serif; fill: #f5a623; }
+      .yes { fill: #00d4c4; }
+      .no { fill: #ff6b4a; }
+      .badge { fill: #1a2b1a; stroke: #00d4c4; stroke-width: 1.5; rx: 4; }
+      .badge2 { fill: #2b1a1a; stroke: #ff6b4a; stroke-width: 1.5; rx: 4; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f5a623"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="820" height="590"/>
+  <!-- Title -->
+  <text x="410" y="40" text-anchor="middle" class="text-title" style="font-size:22px;">Board Selection Decision Flow</text>
+  <text x="410" y="62" text-anchor="middle" class="text-small">Pick the board to match the device — capture won't work otherwise</text>
+  <!-- Start -->
+  <g transform="translate(260, 90)">
+    <rect class="panel" width="300" height="70" rx="10"/>
+    <text x="150" y="35" text-anchor="middle" class="text-title" style="font-size:16px;">Suspect BT Device</text>
+    <text x="150" y="55" text-anchor="middle" class="text-body">(headphones, earbuds, accessory)</text>
+  </g>
+  <path class="arrow" d="M410 160 L410 190"/>
+  <!-- Classic BR/EDR? -->
+  <g transform="translate(210, 190)">
+    <rect class="panel" width="400" height="80" rx="10"/>
+    <text x="200" y="30" text-anchor="middle" class="text-title" style="font-size:15px;">Classic BR/EDR?</text>
+    <text x="200" y="52" text-anchor="middle" class="text-body">Does it speak A2DP / HFP / SPP?</text>
+  </g>
+  <!-- YES branch -->
+  <path class="arrow" d="M210 230 L160 230 L160 300 L210 300" marker-end="url(#arrowhead)"/>
+  <text x="135" y="220" text-anchor="middle" class="yes" style="font-size:12px;">YES</text>
+  <g transform="translate(10, 300)">
+    <rect class="badge" width="300" height="80" rx="8"/>
+    <text x="150" y="25" text-anchor="middle" class="text-title" style="font-size:15px;">→ original ESP32</text>
+    <text x="150" y="48" text-anchor="middle" class="text-accent">BT Classic SPP Sink</text>
+    <text x="150" y="68" text-anchor="middle" class="text-body" style="font-size:11px;">SPP / A2DP / HFP (via ESP-IDF)</text>
+  </g>
+  <!-- NO branch -->
+  <path class="arrow" d="M610 230 L660 230 L660 300 L610 300" marker-end="url(#arrowhead)"/>
+  <text x="685" y="220" text-anchor="middle" class="no" style="font-size:12px;">NO</text>
+  <g transform="translate(410, 290)">
+    <rect class="panel" width="400" height="80" rx="10"/>
+    <text x="200" y="30" text-anchor="middle" class="text-title" style="font-size:15px;">BLE only?</text>
+    <text x="200" y="52" text-anchor="middle" class="text-body">Companion-app / BLE-only buds?</text>
+  </g>
+  <!-- BLE YES -->
+  <path class="arrow" d="M410 370 L360 370 L360 440 L410 440" marker-end="url(#arrowhead)"/>
+  <text x="335" y="360" text-anchor="middle" class="yes" style="font-size:12px;">YES</text>
+  <g transform="translate(10, 440)">
+    <rect class="badge" width="300" height="80" rx="8"/>
+    <text x="150" y="25" text-anchor="middle" class="text-title" style="font-size:15px;">→ ESP32-S3</text>
+    <text x="150" y="48" text-anchor="middle" class="text-accent">BLE GATT Logger + Honeypot</text>
+    <text x="150" y="68" text-anchor="middle" class="text-body" style="font-size:11px;">Central probe + fake peripheral</text>
+  </g>
+  <!-- BLE NO -->
+  <path class="arrow" d="M810 370 L860 370 L860 440 L810 440" marker-end="url(#arrowhead)"/>
+  <text x="885" y="360" text-anchor="middle" class="no" style="font-size:12px;">NO</text>
+  <g transform="translate(510, 440)">
+    <rect class="badge2" width="300" height="80" rx="8"/>
+    <text x="150" y="25" text-anchor="middle" class="text-title" style="font-size:15px; fill:#ff6b4a;">→ ESP32-S2</text>
+    <text x="150" y="48" text-anchor="middle" class="text-body" style="fill:#ff6b4a;">NOT USABLE</text>
+    <text x="150" y="68" text-anchor="middle" class="text-small">Wi-Fi only — no Bluetooth at all</text>
+  </g>
+  <!-- Exit note -->
+  <g transform="translate(110, 540)">
+    <rect class="panel" width="600" height="40" rx="6" fill="#1a1a2b" stroke="#f5a623" stroke-width="1.5"/>
+    <text x="300" y="26" text-anchor="middle" class="text-accent" style="font-size:13px;">Rule of thumb: start with the original ESP32 if unsure — most full-size headphones are BR/EDR</text>
+  </g>
+</svg>

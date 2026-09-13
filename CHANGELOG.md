@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-09-05
+
+### Added
+- Pure, hardware-independent `lib/honeypot_core` (target matching + hex formatting),
+  extracted for host readability and testability.
+- Host unit tests (`tests/test_core.cpp`) and a CI job that runs them plus a full
+  build of both targets on every push / PR.
+- **README rewrite** with architecture / board-decision / operating-procedure
+  diagrams, a config table, an example serial log, and a `Contributing` section.
+- `CONTRIBUTING.md`.
+- Related-projects + author links in the README (cormorantcyber.com and the sibling
+  security repos).
+
+### Fixed
+- Honeypot re-arms advertising after the first connection (`advertiseOnDisconnect`)
+  so it is no longer single-shot.
+- Default `BLE_AUTO_CONNECT` is now `0`, consistent with the empty-target passive
+  default (the shipped build now behaves as documented).
+
+### Changed
+- Serial banner version bumped to 0.1.1 via a shared constant.
+
 ## [0.1.0] - 2026-09-05
 
 ### Added

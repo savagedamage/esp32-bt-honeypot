@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 566">
+  <defs>
+    <style>
+      .bg { fill: #0b0f16; }
+      .panel { fill: #121a2b; stroke: #1e2d45; stroke-width: 2; rx: 8; }
+      .accent { fill: none; stroke: #00d4c4; stroke-width: 2.5; }
+      .arrow { fill: none; stroke: #00d4c4; stroke-width: 2.5; marker-end: url(#arrowhead); }
+      .text-title { font: 700 18px system-ui, sans-serif; fill: #e8f0f8; }
+      .text-body { font: 400 13px system-ui, sans-serif; fill: #b8c8d8; }
+      .text-small { font: 400 11px system-ui, sans-serif; fill: #8899aa; }
+      .text-accent { font: 600 13px system-ui, sans-serif; fill: #00d4c4; }
+      .crossed { fill: #ff4444; stroke: #ff4444; stroke-width: 2; }
+      .badge { fill: #002b28; stroke: #00d4c4; stroke-width: 1.5; rx: 4; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#00d4c4"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="920" height="566"/>
+  <!-- Owner's devices (crossed out) -->
+  <g transform="translate(680, 40)">
+    <rect class="panel" width="200" height="120" rx="8"/>
+    <rect x="20" y="15" width="160" height="40" rx="6" fill="#2a1a1a" stroke="#ff4444" stroke-width="1.5"/>
+    <text x="100" y="40" text-anchor="middle" class="text-title" style="font-size:14px;">📱 Owner's Phone</text>
+    <rect x="20" y="65" width="160" height="40" rx="6" fill="#2a1a1a" stroke="#ff4444" stroke-width="1.5"/>
+    <text x="100" y="90" text-anchor="middle" class="text-title" style="font-size:14px;">💻 Owner's Laptop</text>
+    <line class="crossed" x1="8" y1="128" x2="192" y2="8"/>
+    <text x="100" y="115" text-anchor="middle" class="text-body" style="fill:#ff4444;">✗ NEVER IN THE PATH</text>
+  </g>
+  <!-- Suspect device -->
+  <g transform="translate(40, 200)">
+    <rect class="panel" width="180" height="160" rx="8"/>
+    <circle cx="90" cy="45" r="30" fill="#1e2d45" stroke="#00d4c4" stroke-width="2"/>
+    <path d="M70 45 L60 35 M90 45 L100 35 M110 45 L120 35" stroke="#00d4c4" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <text x="90" y="100" text-anchor="middle" class="text-title">Suspect Device</text>
+    <text x="90" y="120" text-anchor="middle" class="text-body">Headphones / Earbuds</text>
+    <text x="90" y="138" text-anchor="middle" class="text-small">"Smart" Accessory</text>
+    <g transform="translate(25, 140)">
+      <rect class="badge" width="130" height="20"/>
+      <text x="65" y="14" text-anchor="middle" class="text-accent" style="font-size:11px;">Bluetooth (BR/EDR + BLE)</text>
+    </g>
+  </g>
+  <!-- Bluetooth link -->
+  <path class="arrow" d="M220 270 L360 270"/>
+  <text x="290" y="260" text-anchor="middle" class="text-accent" style="font-size:11px;">Bluetooth pairing</text>
+  <!-- ESP32 Sacrificial Host -->
+  <g transform="translate(360, 120)">
+    <rect class="panel" width="200" height="340" rx="10"/>
+    <text x="100" y="30" text-anchor="middle" class="text-title">ESP32 Sacrificial Host</text>
+    <text x="100" y="50" text-anchor="middle" class="text-accent" style="font-size:12px;">Disposable • Reflash afterward</text>
+    <!-- Board chips -->
+    <g transform="translate(15, 70)">
+      <rect class="badge" width="80" height="60" rx="4"/>
+      <rect x="10" y="10" width="60" height="10" rx="2" fill="#00d4c4" opacity="0.3"/>
+      <text x="40" y="20" text-anchor="middle" class="text-accent" style="font-size:9px;">original ESP32</text>
+      <text x="40" y="38" text-anchor="middle" class="text-body" style="font-size:10px;">BT Classic (BR/EDR)</text>
+      <text x="40" y="54" text-anchor="middle" class="text-body" style="font-size:10px;">+ BLE</text>
+    </g>
+    <g transform="translate(105, 70)">
+      <rect class="badge" width="80" height="60" rx="4"/>
+      <rect x="10" y="10" width="60" height="10" rx="2" fill="#00d4c4" opacity="0.3"/>
+      <text x="40" y="20" text-anchor="middle" class="text-accent" style="font-size:9px;">ESP32-S3</text>
+      <text x="40" y="38" text-anchor="middle" class="text-body" style="font-size:10px;">BLE 5 only</text>
+      <text x="40" y="54" text-anchor="middle" class="text-body" style="font-size:10px;">(no Classic BT)</text>
+    </g>
+    <!-- Capture modes -->
+    <rect x="15" y="145" width="170" height="165" rx="6" fill="#0a1420" stroke="#1e2d45" stroke-width="1"/>
+    <text x="100" y="162" text-anchor="middle" class="text-accent" style="font-size:12px;">Capture Modes</text>
+    <g transform="translate(25, 170)">
+      <text x="0" y="0" class="text-title" style="font-size:12px;">BLE (S3):</text>
+      <text x="0" y="20" class="text-body" style="font-size:11px;">• Central probe (scan→connect→enumerate)</text>
+      <text x="0" y="38" class="text-body" style="font-size:11px;">• Honeypot peripheral (device→ESP)</text>
+      <text x="0" y="60" class="text-title" style="font-size:12px;">Classic (orig):</text>
+      <text x="0" y="80" class="text-body" style="font-size:11px;">• SPP server (logs every byte)</text>
+      <text x="0" y="98" class="text-body" style="font-size:11px;">• A2DP/HFP via ESP-IDF (playbook §6)</text>
+    </g>
+    <text x="100" y="325" text-anchor="middle" class="text-small">$5–15 board • You reflash it afterward • It's disposable</text>
+  </g>
+  <!-- UART/Serial link -->
+  <path class="arrow" d="M560 300 L700 300"/>
+  <text x="630" y="290" text-anchor="middle" class="text-accent" style="font-size:11px;">UART / Serial log</text>
+  <!-- Evidence log -->
+  <g transform="translate(700, 220)">
+    <rect class="panel" width="180" height="160" rx="8"/>
+    <text x="90" y="25" text-anchor="middle" class="text-title">Evidence Log</text>
+    <rect x="10" y="35" width="160" height="110" rx="4" fill="#08101a" stroke="#1e2d45"/>
+    <text x="90" y="60" text-anchor="middle" class="text-body" style="font-family:monospace;font-size:10px;">[   12345] I READ...</text>
+    <text x="90" y="78" text-anchor="middle" class="text-body" style="font-family:monospace;font-size:10px;">[   12456] W HONEYPOT...</text>
+    <text x="90" y="96" text-anchor="middle" class="text-body" style="font-family:monospace;font-size:10px;">[   12501] NOTIFY 0x180A...</text>
+    <text x="90" y="114" text-anchor="middle" class="text-body" style="font-family:monospace;font-size:10px;">    DE AD BE EF ...</text>
+    <text x="90" y="145" text-anchor="middle" class="text-small">Redirect to file → sha256sum</text>
+  </g>
+</svg>

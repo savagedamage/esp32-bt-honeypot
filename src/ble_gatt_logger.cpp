@@ -1,5 +1,6 @@
 #include <NimBLEDevice.h>
 #include <string.h>
+#include <honeypot_core.h>
 #include "config.h"
 #include "log.h"
 
@@ -63,6 +64,9 @@ class HoneypotServerCb : public NimBLEServerCallbacks {
 static void startHoneypot() {
     NimBLEServer* pServer = NimBLEDevice::createServer();
     pServer->setCallbacks(new HoneypotServerCb());
+    // Re-arm advertising after the first connection so the honeypot isn't
+    // one-shot: once a device links and leaves, the server re-advertises.
+    pServer->advertiseOnDisconnect(true);
 
     NimBLEService* dis = pServer->createService("180A");           // Device Information
     NimBLECharacteristic* mfr = dis->createCharacteristic("2A29", NIMBLE_PROPERTY::READ);
@@ -108,13 +112,9 @@ static void scanAndConnect() {
         std::string name = dev->getName();
         std::string addr = dev->getAddress().toString();
         LOG_I("  [%d] %s  '%s'  RSSI=%d", i, addr.c_str(), name.c_str(), dev->getRSSI());
-        if (matchIndex < 0) {
-            if (strlen(HONEYPOT_TARGET_MAC) && addr == HONEYPOT_TARGET_MAC) {
-                matchIndex = i;
-            } else if (strlen(HONEYPOT_TARGET_NAME) &&
-                       name.find(HONEYPOT_TARGET_NAME) != std::string::npos) {
-                matchIndex = i;
-            }
+        if (matchIndex < 0 &&
+            honeypot_core::targetMatches(addr, name, HONEYPOT_TARGET_MAC, HONEYPOT_TARGET_NAME)) {
+            matchIndex = i;
         }
     }
 
